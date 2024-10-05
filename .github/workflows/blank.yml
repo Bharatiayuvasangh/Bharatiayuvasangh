@@ -1,0 +1,35 @@
+name: GitHub Pages Deployment
+
+# This workflow triggers whenever code is pushed to the main branch
+on:
+  push:
+    branches:
+      - main
+
+# Define the jobs
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the latest code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Node.js to build the site if required (can be removed if using just HTML/CSS)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Step 3: Install dependencies (if you have any, remove this step if using plain HTML/CSS)
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./
+
+      # Step 4: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # This is where your website's HTML and CSS files are located
